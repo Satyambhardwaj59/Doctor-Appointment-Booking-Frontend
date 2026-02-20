@@ -10,8 +10,8 @@ const Footer = () => {
 
             {/*   ********* Left Section ****** */}
             <div>
-                <img className='mb-5 w-40' src={assets.logo} alt="" />
-                <p className='w-full md:w-2/3 text-gray-600 leading-6'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                <img className='mb-5 w-40' src={assets.logo_one} alt="" />
+                <p className='w-full md:w-2/3 text-gray-600 leading-6'>Docify is an online doctor appointment booking app that connects patients with verified healthcare professionals. Users can search by specialty, check availability, and book instant appointments. It supports video consultations, digital prescriptions, and medical record storage. Docify ensures secure, fast, and convenient healthcare access anytime, anywhere.</p>
             </div>
 
             {/*   ********* Center Section ****** */}
@@ -31,7 +31,7 @@ const Footer = () => {
                 <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
                 <ul className='flex flex-col gap-2 text-gray-600'>
                     <li>+1-212-456-7890</li>
-                    <li>satyambhardwaj59@gmail.com</li>
+                    {/* <li>satyambhardwaj59@gmail.com</li> */}
                 </ul>
                 
             </div>
@@ -40,7 +40,7 @@ const Footer = () => {
         {/* ******* Copyright Section *********  */}
         <div>
             <hr />
-            <p className='py-5 text-sm text-center'>Copyright © 2025 Satyam - All Right Reserved.</p>
+            <p className='py-5 text-sm text-center'>Copyright © 2026 Docify - All Right Reserved.</p>
         </div>
       
     </div>
