@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  background: #ffffff;
+  color: #171717;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.active hr {
+  display: block;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 740px) {
+  .active p {
+    color: #ffffff;
+    background-color: #4f46e5;
+  }
+}
