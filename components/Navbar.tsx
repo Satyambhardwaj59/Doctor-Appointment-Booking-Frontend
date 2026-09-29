@@ -76,6 +76,7 @@ const Navbar: React.FC = () => {
                                 <p onClick={() => router.push('/my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
                                 <p onClick={() => router.push('/my-family')} className='hover:text-black cursor-pointer'>My Family</p>
                                 <p onClick={() => router.push('/messages')} className='hover:text-black cursor-pointer'>Messages</p>
+                                <p onClick={() => router.push('/medical-records')} className='hover:text-black cursor-pointer'>Medical Records</p>
                                 <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
                             </div>
                         </div>
@@ -135,6 +136,9 @@ const Navbar: React.FC = () => {
                                 </Link>
                                 <Link onClick={() => setShowMenu(false)} href='/messages' className='w-full text-center'>
                                     <p className={`px-4 py-2 rounded inline-block ${pathname === '/messages' ? 'bg-indigo-600 text-white' : ''}`}>Messages</p>
+                                </Link>
+                                <Link onClick={() => setShowMenu(false)} href='/medical-records' className='w-full text-center'>
+                                    <p className={`px-4 py-2 rounded inline-block ${pathname === '/medical-records' ? 'bg-indigo-600 text-white' : ''}`}>Medical Records</p>
                                 </Link>
                                 <button onClick={logout} className='w-full text-center'>
                                     <p className='px-4 py-2 rounded inline-block text-red-500'>Logout</p>
