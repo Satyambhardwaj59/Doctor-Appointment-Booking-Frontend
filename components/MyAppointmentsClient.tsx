@@ -8,6 +8,7 @@ import { AppContext } from '../context/AppContext';
 import { Appointment } from '../types';
 import { createConsultation } from '../features/video-consultation/services/videoConsultation.service';
 import { relationshipLabel } from '../features/family-accounts';
+import { queueService, todaySlotDate, extractErrorMessage as queueErrorMessage } from '../features/smart-live-queue';
 
 declare global {
   interface Window {
@@ -23,6 +24,27 @@ const MyAppointmentsClient: React.FC = () => {
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [joiningVideoId, setJoiningVideoId] = useState<string | null>(null);
+  const [joiningQueueId, setJoiningQueueId] = useState<string | null>(null);
+
+  // Joins today's live queue for an appointment. Only the appointmentId is
+  // sent; the backend verifies ownership and derives patient and doctor.
+  const handleJoinQueue = async (appointmentId: string) => {
+    if (!token) return;
+    setJoiningQueueId(appointmentId);
+    try {
+      const data = await queueService.joinQueue({ token, role: 'patient' }, appointmentId);
+      if (data.success) {
+        toast.success(data.alreadyJoined ? 'You are already in the live queue' : 'You joined the live queue');
+        router.push('/queue');
+      } else {
+        toast.error(data.message || 'Could not join the queue');
+      }
+    } catch (error: unknown) {
+      toast.error(queueErrorMessage(error, 'Could not join the queue'));
+    } finally {
+      setJoiningQueueId(null);
+    }
+  };
 
   const slotDateFormat = (slotDate: string) => {
     const dateArray = slotDate.split('_');
@@ -180,6 +202,15 @@ const MyAppointmentsClient: React.FC = () => {
               </div>
               <div></div>
               <div className='flex flex-col gap-2 justify-end'>
+                {!item.cancelled && !item.isCompleted && item.slotDate === todaySlotDate() && (
+                  <button
+                    disabled={joiningQueueId === item._id}
+                    onClick={() => handleJoinQueue(item._id)}
+                    className='text-sm text-green-700 font-medium text-center sm:min-w-48 py-2 border border-green-300 rounded-full cursor-pointer hover:bg-green-600 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-60'
+                  >
+                    {joiningQueueId === item._id ? 'Joining...' : '🕐 Join Live Queue'}
+                  </button>
+                )}
                 {!item.cancelled && (
                   <button
                     onClick={() => router.push(`/messages?doctorId=${item.docData._id}`)}

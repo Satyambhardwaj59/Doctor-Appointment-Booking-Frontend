@@ -7,6 +7,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { AppContext } from '../context/AppContext';
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify';
+import { NotificationBell } from '../features/notification-center';
 
 const Navbar: React.FC = () => {
     const router = useRouter();
@@ -63,6 +64,8 @@ const Navbar: React.FC = () => {
 
             <div className='flex items-center gap-4'>
                 {token && userData ? (
+                    <>
+                    <NotificationBell />
                     <div className='flex items-center gap-2 cursor-pointer group relative' tabIndex={0} aria-label="User menu">
                         <img 
                             className='w-8 h-8 rounded-full object-cover' 
@@ -78,10 +81,13 @@ const Navbar: React.FC = () => {
                                 <p onClick={() => router.push('/messages')} className='hover:text-black cursor-pointer'>Messages</p>
                                 <p onClick={() => router.push('/medical-records')} className='hover:text-black cursor-pointer'>Medical Records</p>
                                 <p onClick={() => router.push('/prescriptions')} className='hover:text-black cursor-pointer'>Prescriptions</p>
+                                <p onClick={() => router.push('/queue')} className='hover:text-black cursor-pointer'>Live Queue</p>
+                                <p onClick={() => router.push('/notifications')} className='hover:text-black cursor-pointer'>Notifications</p>
                                 <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
                             </div>
                         </div>
                     </div>
+                    </>
                 ) : (
                     <button 
                         onClick={() => router.push('/login')} 
@@ -143,6 +149,12 @@ const Navbar: React.FC = () => {
                                 </Link>
                                 <Link onClick={() => setShowMenu(false)} href='/prescriptions' className='w-full text-center'>
                                     <p className={`px-4 py-2 rounded inline-block ${pathname === '/prescriptions' ? 'bg-indigo-600 text-white' : ''}`}>Prescriptions</p>
+                                </Link>
+                                <Link onClick={() => setShowMenu(false)} href='/queue' className='w-full text-center'>
+                                    <p className={`px-4 py-2 rounded inline-block ${pathname === '/queue' ? 'bg-indigo-600 text-white' : ''}`}>Live Queue</p>
+                                </Link>
+                                <Link onClick={() => setShowMenu(false)} href='/notifications' className='w-full text-center'>
+                                    <p className={`px-4 py-2 rounded inline-block ${pathname === '/notifications' ? 'bg-indigo-600 text-white' : ''}`}>Notifications</p>
                                 </Link>
                                 <button onClick={logout} className='w-full text-center'>
                                     <p className='px-4 py-2 rounded inline-block text-red-500'>Logout</p>
