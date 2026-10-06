@@ -21,10 +21,7 @@ export const useChatSocket = (credentials: ChatCredentials | null) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    if (!credentials) {
-      setSocket(null);
-      return;
-    }
+    if (!credentials) return;
 
     const socketInstance = getChatSocket(credentials);
     setSocket(socketInstance);
