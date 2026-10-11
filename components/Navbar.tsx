@@ -75,6 +75,7 @@ const Navbar: React.FC = () => {
                         <Image className='w-2.5' src={assets.dropdown_icon} alt="dropdown icon" />
                         <div className='absolute top-10 right-0 text-base font-medium text-gray-600 z-20 hidden group-hover:block group-focus:block'>
                             <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4 shadow-md'>
+                                <p onClick={() => router.push('/dashboard')} className='hover:text-black cursor-pointer'>Health Dashboard</p>
                                 <p onClick={() => router.push('/my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
                                 <p onClick={() => router.push('/my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
                                 <p onClick={() => router.push('/my-family')} className='hover:text-black cursor-pointer'>My Family</p>
@@ -132,6 +133,9 @@ const Navbar: React.FC = () => {
                         </Link>
                         {token && (
                             <>
+                                <Link onClick={() => setShowMenu(false)} href='/dashboard' className='w-full text-center'>
+                                    <p className={`px-4 py-2 rounded inline-block ${pathname === '/dashboard' ? 'bg-indigo-600 text-white' : ''}`}>Health Dashboard</p>
+                                </Link>
                                 <Link onClick={() => setShowMenu(false)} href='/my-profile' className='w-full text-center'>
                                     <p className={`px-4 py-2 rounded inline-block ${pathname === '/my-profile' ? 'bg-indigo-600 text-white' : ''}`}>My Profile</p>
                                 </Link>
