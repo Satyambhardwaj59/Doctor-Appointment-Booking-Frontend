@@ -48,6 +48,18 @@ export interface Conversation {
   unreadCount?: number;
   createdAt: string;
   updatedAt: string;
+  docData?: {
+    _id: string;
+    name: string;
+    image?: string;
+    speciality?: string;
+  } | null;
+  userData?: {
+    _id: string;
+    name: string;
+    image?: string;
+    phone?: string;
+  } | null;
 }
 
 // ─── API response shapes (mirrors backend's {success, message, ...}) ──────

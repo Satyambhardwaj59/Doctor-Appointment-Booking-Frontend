@@ -7,21 +7,25 @@ import { useNotifications } from '../../hooks/useNotifications';
 import NotificationList from '../NotificationList';
 import type { NotificationCredentials } from '../../types/notification.types';
 
-const NotificationBell: React.FC = () => {
+interface NotificationBellProps {
+  credentials?: NotificationCredentials | null;
+}
+
+const NotificationBell: React.FC<NotificationBellProps> = ({ credentials: customCredentials }) => {
   const { token } = useContext(AppContext);
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const credentials: NotificationCredentials | null = useMemo(
-    () => (token ? { token, role: 'patient' } : null),
-    [token]
-  );
+  const credentials: NotificationCredentials | null = useMemo(() => {
+    if (customCredentials !== undefined) return customCredentials;
+    return token ? { token, role: 'patient' } : null;
+  }, [customCredentials, token]);
 
   const { notifications, unreadCount, loading, error, markRead, markAllRead, remove } =
     useNotifications(credentials);
 
-  if (!token) return null;
+  if (!credentials) return null;
 
   const handleNavigate = (path: string) => {
     setOpen(false);

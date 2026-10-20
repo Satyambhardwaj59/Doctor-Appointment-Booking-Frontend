@@ -5,9 +5,9 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import AppContextProvider from "../context/AppContext";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import IncomingCallModal from "../components/IncomingCallModal";
+import AdminContextProvider from "../context/AdminContext";
+import DoctorContextProvider from "../context/DoctorContext";
+import PatientShell from "../components/PatientShell";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -28,7 +28,8 @@ export const metadata: Metadata = {
     default: "Docify - Book Doctor Appointments Online",
     template: "%s | Docify",
   },
-  description: "Docify is a trusted online doctor appointment booking platform connecting patients with top verified doctors, specialists, and healthcare professionals.",
+  description:
+    "Docify is a trusted online doctor appointment booking platform connecting patients with top verified doctors, specialists, and healthcare professionals.",
   keywords: [
     "doctor appointment",
     "book doctor online",
@@ -61,12 +62,14 @@ export const metadata: Metadata = {
     url: "https://docify-health.com",
     siteName: "Docify",
     title: "Docify - Book Doctor Appointments Online",
-    description: "Connect with verified healthcare specialists and book instant doctor appointments with Docify.",
+    description:
+      "Connect with verified healthcare specialists and book instant doctor appointments with Docify.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Docify - Book Doctor Appointments Online",
-    description: "Book appointments with trusted healthcare specialists hassle-free.",
+    description:
+      "Book appointments with trusted healthcare specialists hassle-free.",
   },
 };
 
@@ -77,16 +80,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${outfit.className} ${outfit.variable} antialiased bg-white text-zinc-800`}>
-        <AppContextProvider>
-          <div className="mx-4 sm:mx-[10%]">
-            <ToastContainer position="top-right" autoClose={3000} />
-            <IncomingCallModal />
-            <Navbar />
-            <main id="main-content">{children}</main>
-            <Footer />
-          </div>
-        </AppContextProvider>
+      <body
+        className={`${outfit.className} ${outfit.variable} antialiased bg-white text-zinc-800`}
+      >
+        <AdminContextProvider>
+          <DoctorContextProvider>
+            <AppContextProvider>
+              <ToastContainer position="top-right" autoClose={3000} />
+              {/* PatientShell renders Navbar, IncomingCallModal, Footer only for patient routes */}
+              <PatientShell>{children}</PatientShell>
+            </AppContextProvider>
+          </DoctorContextProvider>
+        </AdminContextProvider>
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="lazyOnload"

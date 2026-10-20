@@ -11,10 +11,12 @@ interface AppContextProviderProps {
   children: ReactNode;
 }
 
+const months = [" ", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => {
   const currencySymbol = "$";
-  // const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://doctor-appointment-booking-backend-92ui.onrender.com";
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4001";
+  const currency = "$";
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
 
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [token, setToken] = useState<string | false>(() => {
@@ -28,15 +30,15 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
   const getDoctorsData = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/doctor/list`);
-
       if (data.success) {
         setDoctors(data.doctors);
       } else {
         toast.error(data.message);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      toast.error(error.message || "Failed to fetch doctors");
+      const message = error instanceof Error ? error.message : "Failed to fetch doctors";
+      toast.error(message);
     }
   };
 
@@ -50,10 +52,22 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
       } else {
         toast.error(data.message);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      toast.error(error.message || "Failed to load profile");
+      const message = error instanceof Error ? error.message : "Failed to load profile";
+      toast.error(message);
     }
+  };
+
+  const calculateAge = (dob: string): number => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    return today.getFullYear() - birthDate.getFullYear();
+  };
+
+  const slotDateFormat = (slotDate: string): string => {
+    const dateArray = slotDate.split("_");
+    return dateArray[0] + " " + months[Number(dateArray[1])] + " " + dateArray[2];
   };
 
   const value: AppContextType = {
@@ -66,11 +80,14 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     userData,
     setUserData,
     loadUserProfileData,
+    calculateAge,
+    slotDateFormat,
+    currency,
   };
 
   useEffect(() => {
     getDoctorsData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (token) {
@@ -78,7 +95,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
     } else {
       setUserData(false);
     }
-  }, [token]);
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <AppContext.Provider value={value}>{children}</AppContext.Provider>

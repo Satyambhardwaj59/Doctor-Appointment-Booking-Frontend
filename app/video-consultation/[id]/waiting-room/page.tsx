@@ -95,10 +95,10 @@ export default function WaitingRoomPage() {
         <h2 className="text-xl font-bold text-gray-900 mb-2">Session Not Found</h2>
         <p className="text-sm text-gray-600 mb-6">{error || 'This consultation does not exist or has expired.'}</p>
         <button
-          onClick={() => router.push('/my-appointments')}
+          onClick={() => router.push(role === 'doctor' ? '/doctor/appointments' : '/my-appointments')}
           className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition"
         >
-          Return to My Appointments
+          {role === 'doctor' ? 'Return to Doctor Appointments' : 'Return to My Appointments'}
         </button>
       </div>
     );
